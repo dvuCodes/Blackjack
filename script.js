@@ -5,9 +5,6 @@ const cardEl = document.getElementById('card-el');
 const startButton = document.querySelector('.start');
 const newButton = document.querySelector('.new');
 
-//default values
-let firstCard = 10;
-let secondCard = 11;
 // let sum = firstCard + secondCard;
 let hasBlackJack = false;
 let isAlive = true;
@@ -15,42 +12,61 @@ let message = '';
 
 const cards = [];
 let sum = 0;
+let hasStarted = false;
+let num = Math.floor(Math.random() * 10) + 2;
 
-console.log(sum);
+//function to generatea first 2 cards
+const firstTwo = () => {
+  for (let i = 0; i < 2; i++) {
+    num = Math.floor(Math.random() * 10) + 2;
+    cards.push(num);
+  }
+  sum = cards[0] + cards[1];
+  console.log(cards);
+  console.log(sum);
+};
 
+//function to add all cards in array
 const sumCards = () => {
-  for (let i = 0; i < cards.length; i++) {
+  for (let i = 2; i < cards.length; i++) {
     sum += cards[i];
   }
 };
 
 const startGame = () => {
-  if (sum <= 20) {
-    messageEl.textContent = 'Do you want to draw a new card? 🙂';
-  } else if (sum === 21) {
-    messageEl.textContent = "Wohoo! You've got Blackjack! 🥳";
-    hasBlackJack = true;
-  } else {
-    messageEl.textContent = "You're out of the game! 😭";
-    isAlive = false;
-  }
+  if (hasStarted != true) {
+    hasStarted = true;
+    firstTwo();
 
-  cardEl.textContent = `First card: ${firstCard} Second card: ${secondCard}`;
-  sumEl.textContent = `Sum: ${sum}`;
+    if (sum <= 20) {
+      messageEl.textContent = 'Do you want to draw a new card? 🙂';
+    } else if (sum === 21) {
+      messageEl.textContent = "Wohoo! You've got Blackjack! 🥳";
+      hasStarted = false;
+    } else {
+      messageEl.textContent = "You're out of the game! 😭";
+      isAlive = false;
+    }
+
+    cardEl.textContent = `First card: ${cards[0]} Second card: ${cards[1]}`;
+    sumEl.textContent = `Sum: ${sum}`;
+  }
 };
 
 //function to draw cards
 const newCards = () => {
-  let num = Math.floor(Math.random() * 10) + 2;
-  cards.push(num);
+  if (hasStarted != false) {
+    num = Math.floor(Math.random() * 10) + 2;
+    cards.push(num);
 
-  sumCards();
+    sumCards();
 
-  //   isNaN(sum);
-  console.log(cards);
-  console.log(sum);
-  return sum;
+    //   isNaN(sum);
+    console.log(cards);
+    console.log(sum);
+  }
 };
 
+//Event listeners
 startButton.addEventListener('click', startGame);
 newButton.addEventListener('click', newCards);
