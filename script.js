@@ -3,8 +3,9 @@
 const messageEl = document.getElementById('message-el');
 const sumEl = document.getElementById('sum-el');
 const cardEl = document.getElementById('card-el');
-const startButton = document.querySelector('.start');
-const newButton = document.querySelector('.new');
+const startGameBtn = document.querySelector('.start');
+const newCardBtn = document.querySelector('.new-card');
+const newGameBtn = document.querySelector('.new-game');
 
 //declare var in global scope
 let cards, sum, hasStarted, isAlive, num;
@@ -16,6 +17,10 @@ const init = () => {
   hasStarted = false;
   isAlive = true;
   num = Math.floor(Math.random() * 10) + 2;
+
+  messageEl.textContent = 'Want to play a round?';
+  sumEl.textContent = 'Sum: ';
+  cardEl.textContent = 'Cards: ';
 };
 
 init();
@@ -45,7 +50,7 @@ const gameMessage = () => {
     messageEl.textContent = 'Do you want to draw a new card? 🙂';
   } else if (sum === 21) {
     messageEl.textContent = "Wohoo! You've got Blackjack! 🥳";
-    hasStarted = false;
+    isAlive = false;
   } else {
     messageEl.textContent = "You're out of the game! 😭";
     isAlive = false;
@@ -72,12 +77,15 @@ const newCards = () => {
     sumCards();
 
     gameMessage();
-
-    console.log(cards);
-    console.log(sum);
   }
 };
 
+//function to start new game
+const newGame = () => {
+  init();
+};
+
 //Event listeners
-startButton.addEventListener('click', startGame);
-newButton.addEventListener('click', newCards);
+startGameBtn.addEventListener('click', startGame);
+newCardBtn.addEventListener('click', newCards);
+newGameBtn.addEventListener('click', newGame);
